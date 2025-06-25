@@ -2,12 +2,13 @@
 
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { Bar } from "react-chartjs-2";
+import { Line } from "react-chartjs-2";
 import {
   Chart as ChartJS,
   CategoryScale,
   LinearScale,
-  BarElement,
+  PointElement,
+  LineElement,
   Title,
   Tooltip,
   Legend,
@@ -17,7 +18,8 @@ import Link from "next/link";
 ChartJS.register(
   CategoryScale,
   LinearScale,
-  BarElement,
+  PointElement,
+  LineElement,
   Title,
   Tooltip,
   Legend
@@ -62,12 +64,14 @@ export default function Home() {
       {
         label: "পাইকারি মুল্য",
         data: data.map((item) => item.whole_sale_price),
-        backgroundColor: "rgba(20, 162, 20, 0.7)",
+        backgroundColor: "rgba(20, 162, 20, 1)",
+        borderColor: "rgba(20, 162, 20, 1)",
       },
       {
         label: "খুচরা মুল্য",
         data: data.map((item) => item.retail_sale_price),
-        backgroundColor: "rgba(255, 50, 100, 0.7)",
+        backgroundColor: "rgba(255, 50, 50, 1)",
+        borderColor: "rgba(255, 50, 50, 1)",
       },
     ],
   };
@@ -110,7 +114,7 @@ export default function Home() {
         এর মুল্য তালিকা অনুযায়ী। অঞ্চলভেদে মুরগীর মুল্যের কিছুটা তারতম্য হতে
         পারে। আজকের তারিখঃ {date()}
       </marquee>
-      <div className="overflow-hidden p-6 lg:p-10">
+      <div className="py-5 min-h-[calc(100vh-80px)] overflow-hidden p-6 lg:p-10">
         <h1 className="text-center font-bold text-3xl my-5">
           🐔 দৈনিক মুরগীর দাম প্রতি কেজি 🐔
         </h1>
@@ -152,15 +156,15 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="p-4 lg:p-8">
+        <div className="p-4">
           {loading ? (
             <p className="my-10 text-center font-bold uppercase">
               Loading data...
             </p>
           ) : (
             <div className="w-full overflow-hidden">
-              <div className="w-full h-[500px] md:h-[400px] lg:h-[300px] xl:h-[550px]">
-                <Bar data={chartData} options={options} />
+              <div className="w-full h-[550px] md:h-[450px] lg:h-[400px] xl:h-[580px] bg-gray-200 p-4 rounded-xl">
+                <Line data={chartData} options={options} />
               </div>
             </div>
           )}
