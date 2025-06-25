@@ -6,16 +6,31 @@ import axios from "axios";
 export default function AdminDashboard() {
   const [form, setForm] = useState({
     date: "",
-    category: "sonali",
-    whole_sale_price: "",
-    retail_sale_price: "",
+    broylar: {
+      whole_sale_price: "",
+      retail_sale_price: "",
+    },
+    sonali: {
+      whole_sale_price: "",
+      retail_sale_price: "",
+    },
   });
 
   const [message, setMessage] = useState(null);
-  const [messageType, setMessageType] = useState("success"); // or 'error'
+  const [messageType, setMessageType] = useState("success");
 
-  const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+  const handleChange = (e, category, type) => {
+    if (category) {
+      setForm({
+        ...form,
+        [category]: {
+          ...form[category],
+          [type]: e.target.value,
+        },
+      });
+    } else {
+      setForm({ ...form, [e.target.name]: e.target.value });
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -30,9 +45,14 @@ export default function AdminDashboard() {
       setMessageType("success");
       setForm({
         date: "",
-        category: "sonali",
-        whole_sale_price: "",
-        retail_sale_price: "",
+        broylar: {
+          whole_sale_price: "",
+          retail_sale_price: "",
+        },
+        sonali: {
+          whole_sale_price: "",
+          retail_sale_price: "",
+        },
       });
     } catch (error) {
       console.error(error);
@@ -45,7 +65,7 @@ export default function AdminDashboard() {
     <div className="min-h-screen bg-gray-100 flex items-center justify-center px-4 py-8">
       <div className="w-full max-w-2xl bg-white rounded-2xl shadow-xl p-8">
         <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">
-          🐔 Admin Dashboard — Add Chicken Prices
+          🐔 Admin Dashboard — Add Daily Chicken Prices
         </h2>
 
         {message && (
@@ -60,61 +80,90 @@ export default function AdminDashboard() {
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-5">
+        <form onSubmit={handleSubmit} className="space-y-6">
           <div>
             <label className="block text-gray-700 font-medium mb-1">Date</label>
             <input
               type="date"
               name="date"
               value={form.date}
-              onChange={handleChange}
+              onChange={(e) => handleChange(e)}
               className="w-full border border-gray-300 px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
             />
           </div>
 
+          {/* Broylar */}
           <div>
-            <label className="block text-gray-700 font-medium mb-1">
-              Category
-            </label>
-            <select
-              name="category"
-              value={form.category}
-              onChange={handleChange}
-              className="w-full border border-gray-300 px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-              <option value="sonali">Sonali Murgi</option>
-              <option value="broylar">Broylar Murgi</option>
-            </select>
+            <h3 className="text-xl font-bold mb-2 text-gray-800">
+              🐥 ব্রয়লার মুরগী
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-gray-700 font-medium mb-1">
+                  পাইকারি দাম (TK)
+                </label>
+                <input
+                  type="number"
+                  value={form.broylar.whole_sale_price}
+                  onChange={(e) =>
+                    handleChange(e, "broylar", "whole_sale_price")
+                  }
+                  className="w-full border border-gray-300 px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-gray-700 font-medium mb-1">
+                  খুচরা দাম (TK)
+                </label>
+                <input
+                  type="number"
+                  value={form.broylar.retail_sale_price}
+                  onChange={(e) =>
+                    handleChange(e, "broylar", "retail_sale_price")
+                  }
+                  className="w-full border border-gray-300 px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  required
+                />
+              </div>
+            </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-gray-700 font-medium mb-1">
-                Wholesale Price (TK)
-              </label>
-              <input
-                type="number"
-                name="whole_sale_price"
-                value={form.whole_sale_price}
-                onChange={handleChange}
-                className="w-full border border-gray-300 px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                required
-              />
-            </div>
-
-            <div>
-              <label className="block text-gray-700 font-medium mb-1">
-                Retail Price (TK)
-              </label>
-              <input
-                type="number"
-                name="retail_sale_price"
-                value={form.retail_sale_price}
-                onChange={handleChange}
-                className="w-full border border-gray-300 px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                required
-              />
+          {/* Sonali */}
+          <div>
+            <h3 className="text-xl font-bold mb-2 text-gray-800">
+              🐓 সোনালী মুরগী
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-gray-700 font-medium mb-1">
+                  পাইকারি দাম (TK)
+                </label>
+                <input
+                  type="number"
+                  value={form.sonali.whole_sale_price}
+                  onChange={(e) =>
+                    handleChange(e, "sonali", "whole_sale_price")
+                  }
+                  className="w-full border border-gray-300 px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-gray-700 font-medium mb-1">
+                  খুচরা দাম (TK)
+                </label>
+                <input
+                  type="number"
+                  value={form.sonali.retail_sale_price}
+                  onChange={(e) =>
+                    handleChange(e, "sonali", "retail_sale_price")
+                  }
+                  className="w-full border border-gray-300 px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  required
+                />
+              </div>
             </div>
           </div>
 
