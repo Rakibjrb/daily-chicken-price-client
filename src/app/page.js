@@ -156,7 +156,7 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="p-4">
+        <div className="mt-4">
           {loading ? (
             <p className="my-10 text-center font-bold uppercase">
               Loading data...
